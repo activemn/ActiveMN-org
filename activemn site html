@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ActiveMN — Moving Minnesota Forward</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+ :root {
+   --forest: #1a3a2a;
+   --sage: #4a7c5f;
+   --lime: #b8d96e;
+   --cream: #f5f0e8;
+   --sand: #e8dfc8;
+   --rust: #c8522a;
+   --gold: #d4a843;
+   --dark: #0f1f17;
+   --text: #2a3828;
+   --light-text: #5a6b58;
+ }
+
+ *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+ html { scroll-behavior: smooth; }
+
+ body {
+   font-family: 'DM Sans', sans-serif;
+   background: var(--cream);
+   color: var(--text);
+   overflow-x: hidden;
+ }
+
+ /* ── EDIT BANNER ── */
+ #edit-banner {
+   position: fixed;
+   top: 0; left: 0; right: 0;
+   background: var(--forest);
+   color: var(--lime);
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   padding: 10px 24px;
+   z-index: 1000;
+   font-size: 13px;
+   font-weight: 600;
+   letter-spacing: .04em;
+   gap: 12px;
+   flex-wrap: wrap;
+ }
+ #edit-banner span { opacity: .7; font-weight: 400; }
+ .banner-actions { display: flex; gap: 10px; }
+ .btn-edit-toggle, .btn-save {
+   padding: 6px 16px;
+   border-radius: 20px;
+   border: none;
+   cursor: pointer;
+   font-family: inherit;
+   font-size: 12px;
+   font-weight: 600;
+   transition: all .2s;
+ }
+ .btn-edit-toggle { background: var(--lime); color: var(--forest); }
+ .btn-edit-toggle:hover { background: #cef07a; }
+ .btn-save { background: var(--rust); color: #fff; }
+ .btn-save:hover { background: #d95f33; }
+
+ /* ── NAV ── */
+ nav {
+   position: fixed;
+   top: 42px; left: 0; right: 0;
+   background: rgba(245,240,232,.96);
+   backdrop-filter: blur(12px);
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   padding: 14px 48px;
+   z-index: 900;
+   border-bottom: 1px solid rgba(74,124,95,.15);
+ }
+ .nav-logo {
+   font-family: 'Playfair Display', serif;
+   font-size: 22px;
+   font-weight: 900;
+   color: var(--forest);
+   text-decoration: none;
+   letter-spacing: -.02em;
+ }
+ .nav-logo span { color: var(--sage); }
+ .nav-links { display: flex; gap: 32px; align-items: center; list-style: none; }
+ .nav-links a {
+   text-decoration: none;
+   color: var(--text);
+   font-size: 14px;
+   font-weight: 500;
+   letter-spacing: .02em;
+   transition: color .2s;
+ }
+ .nav-links a:hover { color: var(--sage); }
+ .nav-donate {
+   background: var(--rust);
+   color: #fff !important;
+   padding: 9px 22px;
+   border-radius: 24px;
+   font-weight: 600 !important;
+   transition: background .2s, transform .15s !important;
+ }
+ .nav-donate:hover { background: #d95f33 !important; transform: translateY(-1px); }
+
+ /* ── HERO ── */
+ .hero {
+   min-height: 100vh;
+   padding-top: 110px;
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   align-items: center;
+   background: var(--forest);
+   position: relative;
+   overflow: hidden;
+ }
+ .hero::before {
+   content: '';
+   position: absolute;
+   inset: 0;
+   background: radial-gradient(ellipse at 70% 40%, rgba(184,217,110,.12) 0%, transparent 60%),
+               radial-gradient(ellipse at 20% 80%, rgba(200,82,42,.08) 0%, transparent 50%);
+ }
+ .hero-text {
+   padding: 80px 64px;
+   position: relative;
+   z-index: 2;
+ }
+ .hero-tag {
+   display: inline-block;
+   background: rgba(184,217,110,.15);
+   color: var(--lime);
+   font-size: 11px;
+   font-weight: 600;
+   letter-spacing: .12em;
+   text-transform: uppercase;
+   padding: 6px 16px;
+   border-radius: 20px;
+   border: 1px solid rgba(184,217,110,.3);
+   margin-bottom: 28px;
+ }
+ .hero h1 {
+   font-family: 'Playfair Display', serif;
+   font-size: clamp(42px, 5vw, 72px);
+   font-weight: 900;
+   color: var(--cream);
+   line-height: 1.05;
+   margin-bottom: 24px;
+   letter-spacing: -.02em;
+ }
+ .hero h1 em { color: var(--lime); font-style: normal; }
+ .hero-sub {
+   font-size: 18px;
+   color: rgba(245,240,232,.65);
+   line-height: 1.7;
+   max-width: 460px;
+   margin-bottom: 48px;
+   font-weight: 300;
+ }
+ .hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; }
+ .btn-primary {
+   background: var(--lime);
+   color: var(--forest);
+   padding: 14px 32px;
+   border-radius: 32px;
+   font-weight: 700;
+   font-size: 15px;
+   border: none;
+   cursor: pointer;
+   text-decoration: none;
+   display: inline-block;
+   transition: all .2s;
+ }
+ .btn-primary:hover { background: #cef07a; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(184,217,110,.3); }
+ .btn-outline {
+   background: transparent;
+   color: var(--cream);
+   padding: 14px 32px;
+   border-radius: 32px;
+   font-weight: 600;
+   font-size: 15px;
+   border: 1.5px solid rgba(245,240,232,.3);
+   cursor: pointer;
+   text-decoration: none;
+   display: inline-block;
+   transition: all .2s;
+ }
+ .btn-outline:hover { border-color: var(--cream); background: rgba(245,240,232,.07); }
+
+ .hero-visual {
+   position: relative;
+   height: 100vh;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+ }
+ .hero-rings {
+   position: absolute;
+   width: 500px; height: 500px;
+   border-radius: 50%;
+   border: 1px solid rgba(184,217,110,.1);
+   animation: pulse 4s ease-in-out infinite;
+ }
+ .hero-rings:nth-child(2) { width: 380px; height: 380px; animation-delay: .5s; border-color: rgba(184,217,110,.15); }
+ .hero-rings:nth-child(3) { width: 260px; height: 260px; animation-delay: 1s; border-color: rgba(184,217,110,.25); background: rgba(184,217,110,.04); }
+ @keyframes pulse { 0%,100%{transform:scale(1);opacity:.6} 50%{transform:scale(1.04);opacity:1} }
+
+ .hero-icon {
+   font-size: 80px;
+   position: relative;
+   z-index: 2;
+   animation: float 3s ease-in-out infinite;
+ }
+ @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+
+ .stat-row {
+   position: absolute;
+   bottom: 64px; left: 64px; right: 64px;
+   display: flex;
+   gap: 0;
+   z-index: 3;
+ }
+ .stat {
+   flex: 1;
+< truncated lines 228-934 >
+     <button class="freq-btn" data-freq="monthly" onclick="setFrequency(this)">Monthly</button>
+     <button class="freq-btn" data-freq="annually" onclick="setFrequency(this)">Annually</button>
+   </div>
+
+   <div class="amount-grid">
+     <button class="amount-btn" onclick="selectAmount(this,'25')">$25<small>Starter</small></button>
+     <button class="amount-btn active" onclick="selectAmount(this,'50')">$50<small>Popular</small></button>
+     <button class="amount-btn" onclick="selectAmount(this,'100')">$100<small>Champion</small></button>
+     <button class="amount-btn" onclick="selectAmount(this,'250')">$250<small>Leader</small></button>
+   </div>
+
+   <div class="custom-amount-wrap">
+     <span>$</span>
+     <input class="custom-amount-input" type="number" placeholder="Custom amount" min="1" id="customAmount" oninput="setCustomAmount(this.value)" />
+   </div>
+
+   <button class="btn-donate-now" onclick="openDonateModal()">
+     Donate Now →
+   </button>
+   <p class="donate-trust">🔒 Secure, encrypted transaction · Tax-deductible · EIN: 00-0000000</p>
+ </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+ <div class="footer-brand">
+   <a class="nav-logo" href="#"><span>Active</span>MN</a>
+   <p class="footer-tagline">Championing active living and community wellness for every Minnesotan since 2010.</p>
+ </div>
+ <div class="footer-col">
+   <h4>Navigate</h4>
+   <a href="#mission">Our Mission</a>
+   <a href="#who-we-are">Who We Are</a>
+   <a href="#who-we-support">Who We Support</a>
+   <a href="#how-you-can-help">Get Involved</a>
+   <a href="#donate">Donate</a>
+ </div>
+ <div class="footer-col">
+   <h4>Contact</h4>
+   <a href="/cdn-cgi/l/email-protection#c0a9aea6af80a1a3b4a9b6a5adaeeeafb2a7"><span class="__cf_email__" data-cfemail="f29b9c949db29391869b84979f9cdc9d8095">[email&#160;protected]</span></a>
+   <a href="tel:+16515550100">(651) 555-0100</a>
+   <a href="#">St. Paul, Minnesota</a>
+   <a href="#">Privacy Policy</a>
+ </div>
+</footer>
+<div class="footer-bottom">
+ <span>© 2025 ActiveMN. All rights reserved. 501(c)(3) Nonprofit.</span>
+ <span>Made with ♥ in Minnesota</span>
+</div>
+
+<!-- DONATION MODAL -->
+<div class="modal-overlay" id="donateModal" onclick="closeDonateModalOutside(event)">
+ <div class="modal" id="modalContent">
+   <button class="modal-close" onclick="closeDonateModal()">✕</button>
+   <div id="modalForm">
+     <h2>Complete Your Gift 🎉</h2>
+     <p class="modal-sub">You're about to make a real difference for Minnesotans across the state. Thank you!</p>
+     <div class="modal-amount-display">
+       <span class="amount-big" id="modalAmountDisplay">$50</span>
+       <span class="freq-label" id="modalFreqDisplay">One-Time Donation</span>
+     </div>
+     <div class="form-row">
+       <div class="form-group">
+         <label>First Name</label>
+         <input type="text" id="firstName" placeholder="Jane" />
+       </div>
+       <div class="form-group">
+         <label>Last Name</label>
+         <input type="text" id="lastName" placeholder="Smith" />
+       </div>
+     </div>
+     <div class="form-group">
+       <label>Email Address</label>
+       <input type="email" id="donorEmail" placeholder="jane@email.com" />
+     </div>
+     <div class="form-group">
+       <label>Card Number</label>
+       <input type="text" id="cardNum" placeholder="•••• •••• •••• ••••" maxlength="19" oninput="formatCard(this)" />
+     </div>
+     <div class="form-row">
+       <div class="form-group">
+         <label>Expiry</label>
+         <input type="text" id="expiry" placeholder="MM / YY" maxlength="7" oninput="formatExpiry(this)" />
+       </div>
+       <div class="form-group">
+         <label>CVV</label>
+         <input type="text" id="cvv" placeholder="•••" maxlength="4" />
+       </div>
+     </div>
+     <button class="btn-confirm" onclick="confirmDonation()">Confirm Donation</button>
+     <p class="modal-legal">🔒 Your payment info is encrypted and secure. ActiveMN is a registered 501(c)(3). Your donation may be tax-deductible.</p>
+   </div>
+   <div id="modalSuccess" class="success-state" style="display:none;">
+     <div class="success-icon">🎉</div>
+     <h2>Thank You!</h2>
+     <p>Your generous gift of <strong id="successAmount"></strong> has been received. A receipt will be emailed to you shortly. Together, we're moving Minnesota forward!</p>
+     <button class="btn-confirm" style="margin-top:28px;" onclick="closeDonateModal()">Close</button>
+   </div>
+ </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+ // ── STATE ──
+ let selectedAmount = '50';
+ let selectedFrequency = 'one-time';
+ let editModeActive = false;
+ let savedContent = {};
+
+ // ── EDIT MODE ──
+ function toggleEditMode() {
+   editModeActive = !editModeActive;
+   document.body.classList.toggle('edit-mode', editModeActive);
+   const fields = document.querySelectorAll('.editable-field');
+   fields.forEach(f => f.contentEditable = editModeActive ? 'true' : 'false');
+   const btn = document.querySelector('.btn-edit-toggle');
+   btn.textContent = editModeActive ? '🚫 Disable Editing' : 'Enable Editing';
+   btn.style.background = editModeActive ? '#ff8c69' : '';
+ }
+
+ function saveContent() {
+   const fields = document.querySelectorAll('.editable-field');
+   fields.forEach((f, i) => savedContent[i] = f.innerHTML);
+   // Persist to localStorage if available
+   try { localStorage.setItem('activemn_content', JSON.stringify(savedContent)); } catch(e) {}
+   showSaveToast();
+ }
+
+ function showSaveToast() {
+   const t = document.createElement('div');
+   t.style.cssText = 'position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:var(--forest);color:var(--lime);padding:12px 28px;border-radius:32px;font-weight:600;font-size:14px;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.2);transition:opacity .3s;';
+   t.textContent = '✅ Changes saved successfully!';
+   document.body.appendChild(t);
+   setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 2500);
+ }
+
+ // Load saved content on init
+ window.addEventListener('DOMContentLoaded', () => {
+   try {
+     const saved = localStorage.getItem('activemn_content');
+     if (saved) {
+       const parsed = JSON.parse(saved);
+       const fields = document.querySelectorAll('.editable-field');
+       fields.forEach((f, i) => { if (parsed[i]) f.innerHTML = parsed[i]; });
+     }
+   } catch(e) {}
+ });
+
+ // ── DONATION ──
+ function selectAmount(btn, amount) {
+   document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
+   btn.classList.add('active');
+   selectedAmount = amount;
+   document.getElementById('customAmount').value = '';
+ }
+
+ function setCustomAmount(val) {
+   document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
+   selectedAmount = val || '0';
+ }
+
+ function setFrequency(btn) {
+   document.querySelectorAll('.freq-btn').forEach(b => b.classList.remove('active'));
+   btn.classList.add('active');
+   selectedFrequency = btn.dataset.freq;
+ }
+
+ function openDonateModal() {
+   const amt = parseFloat(selectedAmount);
+   if (!amt || amt < 1) { alert('Please select or enter a donation amount.'); return; }
+   const freqLabels = { 'one-time': 'One-Time Donation', 'monthly': 'Monthly Donation', 'annually': 'Annual Donation' };
+   document.getElementById('modalAmountDisplay').textContent = '$' + amt.toFixed(2).replace(/\.00$/, '');
+   document.getElementById('modalFreqDisplay').textContent = freqLabels[selectedFrequency] || 'One-Time Donation';
+   document.getElementById('donateModal').classList.add('open');
+   document.body.style.overflow = 'hidden';
+ }
+
+ function closeDonateModal() {
+   document.getElementById('donateModal').classList.remove('open');
+   document.body.style.overflow = '';
+   setTimeout(() => {
+     document.getElementById('modalForm').style.display = '';
+     document.getElementById('modalSuccess').style.display = 'none';
+   }, 300);
+ }
+
+ function closeDonateModalOutside(e) {
+   if (e.target === document.getElementById('donateModal')) closeDonateModal();
+ }
+
+ function confirmDonation() {
+   const first = document.getElementById('firstName').value.trim();
+   const email = document.getElementById('donorEmail').value.trim();
+   const card = document.getElementById('cardNum').value.trim();
+   const exp = document.getElementById('expiry').value.trim();
+   const cvv = document.getElementById('cvv').value.trim();
+   if (!first || !email || card.length < 19 || exp.length < 7 || cvv.length < 3) {
+     alert('Please fill in all fields to complete your donation.');
+     return;
+   }
+   const btn = document.querySelector('.btn-confirm');
+   btn.textContent = 'Processing...';
+   btn.disabled = true;
+   setTimeout(() => {
+     const amt = '$' + parseFloat(selectedAmount).toFixed(2).replace(/\.00$/, '');
+     document.getElementById('successAmount').textContent = amt;
+     document.getElementById('modalForm').style.display = 'none';
+     document.getElementById('modalSuccess').style.display = 'block';
+     btn.textContent = 'Confirm Donation';
+     btn.disabled = false;
+   }, 1800);
+ }
+
+ function formatCard(input) {
+   let v = input.value.replace(/\D/g, '').substring(0, 16);
+   input.value = v.replace(/(.{4})/g, '$1 ').trim();
+ }
+
+ function formatExpiry(input) {
+   let v = input.value.replace(/\D/g, '').substring(0, 4);
+   if (v.length >= 2) v = v.slice(0,2) + ' / ' + v.slice(2);
+   input.value = v;
+ }
+
+ // ── REVEAL ON SCROLL ──
+ const reveals = document.querySelectorAll('.reveal');
+ const observer = new IntersectionObs
